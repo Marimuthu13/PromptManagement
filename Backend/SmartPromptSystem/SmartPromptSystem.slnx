@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SmartPrompt.API/SmartPrompt.API.csproj" />
+  <Project Path="SmartPrompt.Application/SmartPrompt.Application.csproj" />
+  <Project Path="SmartPrompt.Domain/SmartPrompt.Domain.csproj" />
+  <Project Path="SmartPrompt.Infrastructure/SmartPrompt.Infrastructure.csproj" />
+</Solution>

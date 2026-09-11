@@ -1,0 +1,12 @@
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\bin\Debug\net10.0\SmartPrompt.Domain.deps.json
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\bin\Debug\net10.0\SmartPrompt.Domain.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\bin\Debug\net10.0\SmartPrompt.Domain.pdb
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\obj\Debug\net10.0\SmartPrompt.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\obj\Debug\net10.0\SmartPrompt.Domain.AssemblyInfoInputs.cache
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\obj\Debug\net10.0\SmartPrompt.Domain.AssemblyInfo.cs
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\obj\Debug\net10.0\SmartPrompt.Domain.csproj.CoreCompileInputs.cache
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\obj\Debug\net10.0\SmartPrompt.Domain.sourcelink.json
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\obj\Debug\net10.0\SmartPrompt.Domain.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\obj\Debug\net10.0\refint\SmartPrompt.Domain.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\obj\Debug\net10.0\SmartPrompt.Domain.pdb
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Domain\obj\Debug\net10.0\ref\SmartPrompt.Domain.dll

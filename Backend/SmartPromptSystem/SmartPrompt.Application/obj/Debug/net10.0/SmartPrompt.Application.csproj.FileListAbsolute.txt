@@ -1,0 +1,16 @@
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\bin\Debug\net10.0\SmartPrompt.Application.deps.json
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\bin\Debug\net10.0\SmartPrompt.Application.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\bin\Debug\net10.0\SmartPrompt.Application.pdb
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\bin\Debug\net10.0\SmartPrompt.Domain.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\bin\Debug\net10.0\SmartPrompt.Domain.pdb
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\obj\Debug\net10.0\SmartPrompt.Application.csproj.AssemblyReference.cache
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\obj\Debug\net10.0\SmartPrompt.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\obj\Debug\net10.0\SmartPrompt.Application.AssemblyInfoInputs.cache
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\obj\Debug\net10.0\SmartPrompt.Application.AssemblyInfo.cs
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\obj\Debug\net10.0\SmartPrompt.Application.csproj.CoreCompileInputs.cache
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\obj\Debug\net10.0\SmartPrompt.Application.sourcelink.json
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\obj\Debug\net10.0\SmartPro.C2289748.Up2Date
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\obj\Debug\net10.0\SmartPrompt.Application.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\obj\Debug\net10.0\refint\SmartPrompt.Application.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\obj\Debug\net10.0\SmartPrompt.Application.pdb
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.Application\obj\Debug\net10.0\ref\SmartPrompt.Application.dll
