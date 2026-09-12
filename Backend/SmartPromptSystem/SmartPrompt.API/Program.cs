@@ -1,5 +1,6 @@
 using SmartPrompt.API.Middleware;
 using SmartPrompt.Application;
+using SmartPrompt.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ builder.Services.AddProblemDetails();
 
 // Register Application layer dependencies
 builder.Services.AddApplication();
+
+// Register Infrastructure layer dependencies
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 

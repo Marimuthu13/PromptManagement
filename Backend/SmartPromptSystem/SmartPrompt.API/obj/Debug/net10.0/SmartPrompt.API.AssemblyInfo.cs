@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("f3041a1d-c7f5-4ecd-a7bb-56832da56138")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartPrompt.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+02697595cf08c1d786213b9acfde3ede9397538e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35719dc23ea9d0eb37503dbb81f01cff98dfe056")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartPrompt.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartPrompt.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
