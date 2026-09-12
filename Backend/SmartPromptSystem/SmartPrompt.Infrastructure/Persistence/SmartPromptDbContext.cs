@@ -1,10 +1,11 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using SmartPrompt.Application.Common.Interfaces;
 using SmartPrompt.Domain.Entities;
 
 namespace SmartPrompt.Infrastructure.Persistence;
 
-public class SmartPromptDbContext : DbContext
+public class SmartPromptDbContext : DbContext, IApplicationDbContext
 {
     public SmartPromptDbContext(DbContextOptions<SmartPromptDbContext> options) : base(options)
     {

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SmartPrompt.Application.Common.Interfaces;
 using SmartPrompt.Infrastructure.Persistence;
 using SmartPrompt.Infrastructure.Persistence.Interceptors;
 
@@ -20,6 +21,8 @@ public static class DependencyInjection
                    .UseSnakeCaseNamingConvention()
                    .AddInterceptors(interceptor);
         });
+
+        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<SmartPromptDbContext>());
 
         return services;
     }

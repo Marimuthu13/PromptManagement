@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
+using SmartPrompt.Application.Common.Exceptions;
+
 namespace SmartPrompt.API.Middleware;
 
 public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IHostEnvironment env) : IExceptionHandler
@@ -22,18 +24,18 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IHos
             Instance = httpContext.Request.Path
         };
 
-        // 3. Map specific exceptions in the future
-        // if (exception is ValidationException validationException)
-        // {
-        //     problemDetails.Status = StatusCodes.Status400BadRequest;
-        //     problemDetails.Title = "Validation Error";
-        //     // problemDetails.Extensions.Add("errors", validationException.Errors);
-        // }
-        // else if (exception is NotFoundException notFoundException)
-        // {
-        //     problemDetails.Status = StatusCodes.Status404NotFound;
-        //     problemDetails.Title = "Resource Not Found";
-        // }
+        // 3. Map specific exceptions
+        if (exception is ValidationException validationException)
+        {
+            problemDetails.Status = StatusCodes.Status400BadRequest;
+            problemDetails.Title = "Validation Error";
+            problemDetails.Extensions.Add("errors", validationException.Errors);
+        }
+        else if (exception is NotFoundException notFoundException)
+        {
+            problemDetails.Status = StatusCodes.Status404NotFound;
+            problemDetails.Title = "Resource Not Found";
+        }
 
         // 4. Handle development vs production details
         if (env.IsDevelopment())

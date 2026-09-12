@@ -5,6 +5,7 @@ using SmartPrompt.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 // Centralized exception handling and Problem Details
@@ -23,11 +24,17 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwaggerUI(c => 
+    {
+        c.SwaggerEndpoint("/openapi/v1.json", "SmartPrompt API");
+    });
 }
 
 app.UseExceptionHandler(); // Adds the exception handling middleware
 
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 // Basic health check endpoint
 app.MapGet("/", () => "Smart Prompt System API is running.")
