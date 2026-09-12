@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "tGVGMRtcXA8=",
+  "dgSpecHash": "L0ZkWBLvEo4=",
   "success": true,
   "projectFilePath": "D:\\PromptManagement\\PromptManagement\\Backend\\SmartPromptSystem\\SmartPrompt.Infrastructure\\SmartPrompt.Infrastructure.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\MarimuthuSenthilMuru\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.12\\microsoft.extensions.dependencyinjection.abstractions.10.0.12.nupkg.sha512"
+  ],
   "logs": []
 }

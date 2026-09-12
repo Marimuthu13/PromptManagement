@@ -1,8 +1,17 @@
+using SmartPrompt.API.Middleware;
+using SmartPrompt.Application;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Centralized exception handling and Problem Details
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
+// Register Application layer dependencies
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
@@ -12,30 +21,21 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseExceptionHandler(); // Adds the exception handling middleware
+
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// Basic health check endpoint
+app.MapGet("/", () => "Smart Prompt System API is running.")
+   .WithName("GetRoot");
 
-app.MapGet("/weatherforecast", () =>
+// Detailed health status endpoint
+app.MapGet("/api/health", () => Results.Ok(new 
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    status = "Healthy",
+    application = "SmartPromptSystem",
+    timestampUtc = DateTime.UtcNow
+}))
+.WithName("GetHealthStatus");
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
