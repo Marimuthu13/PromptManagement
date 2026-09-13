@@ -6,15 +6,24 @@ using NotFoundException = SmartPrompt.Application.Common.Exceptions.NotFoundExce
 
 namespace SmartPrompt.Application.Features.Prompts.Commands.CreatePrompt;
 
-public class CreatePromptCommandHandler(IApplicationDbContext context) : IRequestHandler<CreatePromptCommand, Guid>
+public class CreatePromptCommandHandler(
+    IApplicationDbContext context,
+    ICurrentUser currentUser) : IRequestHandler<CreatePromptCommand, Guid>
 {
     public async Task<Guid> Handle(CreatePromptCommand request, CancellationToken cancellationToken)
     {
+        if (currentUser.UserId == null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        var userId = currentUser.UserId.Value;
+
         // Check User existence using AnyAsync per guidelines (maps to 404)
-        var userExists = await context.Users.AnyAsync(u => u.Id == request.UserId, cancellationToken);
+        var userExists = await context.Users.AnyAsync(u => u.Id == userId, cancellationToken);
         if (!userExists)
         {
-            throw new NotFoundException(nameof(User), request.UserId);
+            throw new NotFoundException(nameof(User), userId);
         }
 
         // Check Category existence using AnyAsync per guidelines (maps to 404)
@@ -30,7 +39,7 @@ public class CreatePromptCommandHandler(IApplicationDbContext context) : IReques
             Description = request.Description,
             Content = request.Content,
             CategoryId = request.CategoryId,
-            UserId = request.UserId
+            UserId = userId
         };
 
         context.Prompts.Add(entity);

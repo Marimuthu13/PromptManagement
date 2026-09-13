@@ -36,6 +36,11 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IHos
             problemDetails.Status = StatusCodes.Status404NotFound;
             problemDetails.Title = "Resource Not Found";
         }
+        else if (exception is UnauthorizedAccessException)
+        {
+            problemDetails.Status = StatusCodes.Status401Unauthorized;
+            problemDetails.Title = "Unauthorized";
+        }
 
         // 4. Handle development vs production details
         if (env.IsDevelopment())

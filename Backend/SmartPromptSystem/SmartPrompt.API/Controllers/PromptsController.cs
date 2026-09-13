@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartPrompt.Application.Features.Prompts.Commands.CreatePrompt;
 using SmartPrompt.Application.Features.Prompts.Queries.GetPrompts;
@@ -7,6 +8,7 @@ namespace SmartPrompt.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class PromptsController(ISender sender) : ControllerBase
 {
     [HttpPost]
@@ -22,6 +24,7 @@ public class PromptsController(ISender sender) : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<List<PromptDto>>> GetPrompts(CancellationToken cancellationToken)
     {
         var result = await sender.Send(new GetPromptsQuery(), cancellationToken);

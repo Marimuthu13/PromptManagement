@@ -133,3 +133,13 @@ D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\b
 D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\MediatR.dll
 D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\MediatR.Contracts.dll
 D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\BCrypt-Net-Next.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+D:\PromptManagement\PromptManagement\Backend\SmartPromptSystem\SmartPrompt.API\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll

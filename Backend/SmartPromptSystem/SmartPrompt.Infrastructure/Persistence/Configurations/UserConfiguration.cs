@@ -18,6 +18,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(255);
 
+        builder.Property(u => u.PasswordHash)
+            .IsRequired()
+            .HasMaxLength(2000);
+
         // Unique index for Email
         builder.HasIndex(u => u.Email)
             .IsUnique();

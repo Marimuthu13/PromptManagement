@@ -18,8 +18,5 @@ public class CreatePromptCommandValidator : AbstractValidator<CreatePromptComman
 
         RuleFor(v => v.CategoryId)
             .NotEmpty().WithMessage("CategoryId is required.");
-
-        RuleFor(v => v.UserId)
-            .NotEmpty().WithMessage("UserId is required.");
     }
 }
