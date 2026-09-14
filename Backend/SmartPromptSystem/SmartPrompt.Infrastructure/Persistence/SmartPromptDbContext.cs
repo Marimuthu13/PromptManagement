@@ -15,6 +15,7 @@ public class SmartPromptDbContext : DbContext, IApplicationDbContext
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Prompt> Prompts => Set<Prompt>();
     public DbSet<PromptVariable> PromptVariables => Set<PromptVariable>();
+    public DbSet<PromptTemplate> PromptTemplates => Set<PromptTemplate>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

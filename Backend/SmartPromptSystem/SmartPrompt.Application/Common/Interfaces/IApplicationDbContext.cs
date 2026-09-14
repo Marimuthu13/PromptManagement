@@ -9,6 +9,7 @@ public interface IApplicationDbContext
     DbSet<Category> Categories { get; }
     DbSet<Prompt> Prompts { get; }
     DbSet<PromptVariable> PromptVariables { get; }
+    DbSet<PromptTemplate> PromptTemplates { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
