@@ -41,6 +41,12 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IHos
             problemDetails.Status = StatusCodes.Status401Unauthorized;
             problemDetails.Title = "Unauthorized";
         }
+        else if (exception is ConflictException conflictException)
+        {
+            problemDetails.Status = StatusCodes.Status409Conflict;
+            problemDetails.Title = "Conflict";
+            problemDetails.Detail = conflictException.Message;
+        }
 
         // 4. Handle development vs production details
         if (env.IsDevelopment())

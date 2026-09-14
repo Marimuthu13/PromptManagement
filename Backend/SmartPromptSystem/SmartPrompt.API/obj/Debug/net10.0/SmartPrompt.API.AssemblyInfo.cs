@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartPrompt.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73d9d11971381f0e22012d364be4eaaf19432d49")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ddcc047f1f95a1a1a0c7915f1bd264f58e79433e")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartPrompt.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartPrompt.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

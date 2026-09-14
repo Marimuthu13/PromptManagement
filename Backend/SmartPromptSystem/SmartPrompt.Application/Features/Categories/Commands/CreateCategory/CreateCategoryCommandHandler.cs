@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SmartPrompt.Application.Common.Interfaces;
 using SmartPrompt.Domain.Entities;
-using ValidationException = SmartPrompt.Application.Common.Exceptions.ValidationException;
+using SmartPrompt.Application.Common.Exceptions;
 
 namespace SmartPrompt.Application.Features.Categories.Commands.CreateCategory;
 
@@ -16,10 +16,7 @@ public class CreateCategoryCommandHandler(IApplicationDbContext context) : IRequ
 
         if (exists)
         {
-            throw new ValidationException(new Dictionary<string, string[]>
-            {
-                { nameof(request.Name), new[] { "A category with this name already exists." } }
-            });
+            throw new ConflictException("A category with this name already exists.");
         }
 
         var entity = new Category
