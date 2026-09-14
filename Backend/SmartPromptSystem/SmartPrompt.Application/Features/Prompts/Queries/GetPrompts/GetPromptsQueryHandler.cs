@@ -17,9 +17,21 @@ public class GetPromptsQueryHandler(
 
         var userId = currentUser.UserId.Value;
 
-        return await context.Prompts
+        var query = context.Prompts
             .AsNoTracking()
-            .Where(p => p.UserId == userId)
+            .Where(p => p.UserId == userId);
+
+        if (request.CategoryId.HasValue)
+        {
+            query = query.Where(p => p.CategoryId == request.CategoryId.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.Search))
+        {
+            query = query.Where(p => p.Title.Contains(request.Search) || p.Content.Contains(request.Search));
+        }
+
+        return await query
             .OrderBy(p => p.Title)
             .Select(p => new PromptDto
             {

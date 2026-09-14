@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartPrompt.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+15223d831b0be24d1955083f1c60f433fb15a1ee")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73d9d11971381f0e22012d364be4eaaf19432d49")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartPrompt.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartPrompt.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
