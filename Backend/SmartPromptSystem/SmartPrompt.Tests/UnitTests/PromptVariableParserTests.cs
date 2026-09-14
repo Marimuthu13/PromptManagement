@@ -97,4 +97,36 @@ public class PromptVariableParserTests
         Assert.Single(result);
         Assert.Equal("valid_name", result[0]);
     }
+
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void SubstituteVariables_VariablesMatch_ReturnsSubstitutedString()
+    {
+        var content = "Hello {name}, your code is {code}.";
+        var vars = new Dictionary<string, string>
+        {
+            { "name", "Alice" },
+            { "code", "1234" }
+        };
+
+        var result = PromptVariableParser.SubstituteVariables(content, vars);
+
+        Assert.Equal("Hello Alice, your code is 1234.", result);
+    }
+
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void SubstituteVariables_MissingVariable_LeavesPlaceholder()
+    {
+        var content = "Hello {name}, your code is {code}.";
+        var vars = new Dictionary<string, string>
+        {
+            { "name", "Alice" }
+            // 'code' is missing
+        };
+
+        var result = PromptVariableParser.SubstituteVariables(content, vars);
+
+        Assert.Equal("Hello Alice, your code is {code}.", result);
+    }
 }

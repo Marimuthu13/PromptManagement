@@ -18,4 +18,27 @@ public static class PromptVariableParser
             .Select(m => m.Groups[1].Value)
             .Distinct();
     }
+
+    public static string SubstituteVariables(string content, IDictionary<string, string> variables)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            return string.Empty;
+        }
+
+        if (variables == null || !variables.Any())
+        {
+            return content;
+        }
+
+        return VariableRegex.Replace(content, match =>
+        {
+            var varName = match.Groups[1].Value;
+            if (variables.TryGetValue(varName, out var value))
+            {
+                return value;
+            }
+            return match.Value; // Leave unchanged if not provided
+        });
+    }
 }

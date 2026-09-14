@@ -33,6 +33,10 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUser, CurrentUser>();
 
+        // AI Provider
+        services.Configure<SmartPrompt.Infrastructure.AI.OpenAIConfiguration>(configuration.GetSection(SmartPrompt.Infrastructure.AI.OpenAIConfiguration.SectionName));
+        services.AddHttpClient<IAIProvider, SmartPrompt.Infrastructure.AI.OpenAIProvider>();
+
         return services;
     }
 }
