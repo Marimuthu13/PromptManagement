@@ -101,3 +101,5 @@ app.MapGet("/api/health", () => Results.Ok(new
 .WithName("GetHealthStatus");
 
 app.Run();
+
+public partial class Program { }

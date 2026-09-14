@@ -8,4 +8,5 @@ public record PromptDto
     public string Content { get; init; } = string.Empty;
     public Guid CategoryId { get; init; }
     public Guid UserId { get; init; }
+    public List<PromptVariableDto> Variables { get; init; } = new();
 }

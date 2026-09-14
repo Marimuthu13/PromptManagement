@@ -34,5 +34,6 @@ public class PromptConfiguration : IEntityTypeConfiguration<Prompt>
         // Indexes for performance
         builder.HasIndex(p => p.UserId);
         builder.HasIndex(p => p.CategoryId);
+        builder.HasIndex(p => p.Title);
     }
 }

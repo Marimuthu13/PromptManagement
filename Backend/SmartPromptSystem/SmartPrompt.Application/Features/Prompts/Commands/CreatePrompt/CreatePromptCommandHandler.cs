@@ -42,6 +42,16 @@ public class CreatePromptCommandHandler(
             UserId = userId
         };
 
+        var variableNames = SmartPrompt.Application.Common.Utils.PromptVariableParser.ExtractVariables(request.Content);
+        foreach (var name in variableNames)
+        {
+            entity.Variables.Add(new PromptVariable
+            {
+                Name = name,
+                IsRequired = true // Default to true
+            });
+        }
+
         context.Prompts.Add(entity);
         await context.SaveChangesAsync(cancellationToken);
 

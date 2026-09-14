@@ -1,14 +1,15 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SmartPrompt.Application.Common.Interfaces;
+using SmartPrompt.Application.Common.Models;
 
 namespace SmartPrompt.Application.Features.Prompts.Queries.GetPrompts;
 
 public class GetPromptsQueryHandler(
     IApplicationDbContext context,
-    ICurrentUser currentUser) : IRequestHandler<GetPromptsQuery, List<PromptDto>>
+    ICurrentUser currentUser) : IRequestHandler<GetPromptsQuery, PagedResult<PromptDto>>
 {
-    public async Task<List<PromptDto>> Handle(GetPromptsQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<PromptDto>> Handle(GetPromptsQuery request, CancellationToken cancellationToken)
     {
         if (currentUser.UserId == null)
         {
@@ -31,8 +32,18 @@ public class GetPromptsQueryHandler(
             query = query.Where(p => p.Title.Contains(request.Search) || p.Content.Contains(request.Search));
         }
 
-        return await query
-            .OrderBy(p => p.Title)
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        // Sorting
+        query = request.SortBy?.ToLowerInvariant() switch
+        {
+            "category" => request.SortDescending ? query.OrderByDescending(p => p.CategoryId) : query.OrderBy(p => p.CategoryId),
+            _ => request.SortDescending ? query.OrderByDescending(p => p.Title) : query.OrderBy(p => p.Title)
+        };
+
+        var items = await query
+            .Skip((request.Page - 1) * request.PageSize)
+            .Take(request.PageSize)
             .Select(p => new PromptDto
             {
                 Id = p.Id,
@@ -40,8 +51,22 @@ public class GetPromptsQueryHandler(
                 Description = p.Description,
                 Content = p.Content,
                 CategoryId = p.CategoryId,
-                UserId = p.UserId
+                UserId = p.UserId,
+                Variables = p.Variables.Select(v => new PromptVariableDto
+                {
+                    Id = v.Id,
+                    Name = v.Name,
+                    IsRequired = v.IsRequired
+                }).ToList()
             })
             .ToListAsync(cancellationToken);
+
+        return new PagedResult<PromptDto>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            Page = request.Page,
+            PageSize = request.PageSize
+        };
     }
 }

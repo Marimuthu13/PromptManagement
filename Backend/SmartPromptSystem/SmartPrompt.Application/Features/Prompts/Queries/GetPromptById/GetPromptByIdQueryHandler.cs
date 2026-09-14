@@ -30,7 +30,13 @@ public class GetPromptByIdQueryHandler(
                 Description = p.Description,
                 Content = p.Content,
                 CategoryId = p.CategoryId,
-                UserId = p.UserId
+                UserId = p.UserId,
+                Variables = p.Variables.Select(v => new PromptVariableDto
+                {
+                    Id = v.Id,
+                    Name = v.Name,
+                    IsRequired = v.IsRequired
+                }).ToList()
             })
             .FirstOrDefaultAsync(cancellationToken);
 

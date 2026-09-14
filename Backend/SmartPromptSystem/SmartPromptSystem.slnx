@@ -3,4 +3,5 @@
   <Project Path="SmartPrompt.Application/SmartPrompt.Application.csproj" />
   <Project Path="SmartPrompt.Domain/SmartPrompt.Domain.csproj" />
   <Project Path="SmartPrompt.Infrastructure/SmartPrompt.Infrastructure.csproj" />
+  <Project Path="SmartPrompt.Tests/SmartPrompt.Tests.csproj" />
 </Solution>

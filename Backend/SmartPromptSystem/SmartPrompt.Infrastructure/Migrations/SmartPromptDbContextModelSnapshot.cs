@@ -105,10 +105,52 @@ namespace SmartPrompt.Infrastructure.Migrations
                     b.HasIndex("CategoryId")
                         .HasDatabaseName("ix_prompts_category_id");
 
+                    b.HasIndex("Title")
+                        .HasDatabaseName("ix_prompts_title");
+
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_prompts_user_id");
 
                     b.ToTable("prompts", (string)null);
+                });
+
+            modelBuilder.Entity("SmartPrompt.Domain.Entities.PromptVariable", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at_utc");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_required");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.Property<Guid>("PromptId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("prompt_id");
+
+                    b.Property<DateTimeOffset?>("UpdatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at_utc");
+
+                    b.HasKey("Id")
+                        .HasName("pk_prompt_variables");
+
+                    b.HasIndex("PromptId", "Name")
+                        .IsUnique()
+                        .HasDatabaseName("ix_prompt_variables_prompt_id_name");
+
+                    b.ToTable("prompt_variables", (string)null);
                 });
 
             modelBuilder.Entity("SmartPrompt.Domain.Entities.User", b =>
@@ -175,9 +217,26 @@ namespace SmartPrompt.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SmartPrompt.Domain.Entities.PromptVariable", b =>
+                {
+                    b.HasOne("SmartPrompt.Domain.Entities.Prompt", "Prompt")
+                        .WithMany("Variables")
+                        .HasForeignKey("PromptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_prompt_variables_prompts_prompt_id");
+
+                    b.Navigation("Prompt");
+                });
+
             modelBuilder.Entity("SmartPrompt.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Prompts");
+                });
+
+            modelBuilder.Entity("SmartPrompt.Domain.Entities.Prompt", b =>
+                {
+                    b.Navigation("Variables");
                 });
 
             modelBuilder.Entity("SmartPrompt.Domain.Entities.User", b =>

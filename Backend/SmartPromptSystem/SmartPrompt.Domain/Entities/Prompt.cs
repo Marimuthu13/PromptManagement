@@ -15,4 +15,5 @@ public class Prompt : AuditableEntity
     // Navigation properties
     public User User { get; set; } = null!;
     public Category Category { get; set; } = null!;
+    public ICollection<PromptVariable> Variables { get; private set; } = new List<PromptVariable>();
 }

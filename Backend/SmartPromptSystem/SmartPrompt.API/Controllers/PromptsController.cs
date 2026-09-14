@@ -27,12 +27,25 @@ public class PromptsController(ISender sender) : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<List<PromptDto>>> GetPrompts(
+    public async Task<ActionResult<SmartPrompt.Application.Common.Models.PagedResult<PromptDto>>> GetPrompts(
         [FromQuery] Guid? categoryId, 
         [FromQuery] string? search, 
-        CancellationToken cancellationToken)
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? sortBy = null,
+        [FromQuery] bool sortDescending = false,
+        CancellationToken cancellationToken = default)
     {
-        var result = await sender.Send(new GetPromptsQuery { CategoryId = categoryId, Search = search }, cancellationToken);
+        var query = new GetPromptsQuery 
+        { 
+            CategoryId = categoryId, 
+            Search = search,
+            Page = page,
+            PageSize = pageSize,
+            SortBy = sortBy,
+            SortDescending = sortDescending
+        };
+        var result = await sender.Send(query, cancellationToken);
         return Ok(result);
     }
 

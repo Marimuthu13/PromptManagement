@@ -21,6 +21,7 @@ public class UpdatePromptCommandHandler(
         var userId = currentUser.UserId.Value;
 
         var entity = await context.Prompts
+            .Include(p => p.Variables)
             .FirstOrDefaultAsync(p => p.Id == request.Id && p.UserId == userId, cancellationToken);
 
         if (entity == null)
@@ -42,6 +43,27 @@ public class UpdatePromptCommandHandler(
         entity.Content = request.Content;
         entity.CategoryId = request.CategoryId;
 
+        var variableNames = SmartPrompt.Application.Common.Utils.PromptVariableParser.ExtractVariables(request.Content).ToList();
+        
+        // Remove variables that are no longer in the content
+        var toRemove = entity.Variables.Where(v => !variableNames.Contains(v.Name)).ToList();
+        foreach (var variable in toRemove)
+        {
+            entity.Variables.Remove(variable);
+        }
+
+        // Add new variables
+        var existingNames = entity.Variables.Select(v => v.Name).ToList();
+        var toAdd = variableNames.Where(n => !existingNames.Contains(n)).ToList();
+        foreach (var name in toAdd)
+        {
+            entity.Variables.Add(new PromptVariable
+            {
+                Name = name,
+                IsRequired = true
+            });
+        }
+
         await context.SaveChangesAsync(cancellationToken);
 
         return new PromptDto
@@ -51,7 +73,13 @@ public class UpdatePromptCommandHandler(
             Description = entity.Description,
             Content = entity.Content,
             CategoryId = entity.CategoryId,
-            UserId = entity.UserId
+            UserId = entity.UserId,
+            Variables = entity.Variables.Select(v => new PromptVariableDto
+            {
+                Id = v.Id,
+                Name = v.Name,
+                IsRequired = v.IsRequired
+            }).ToList()
         };
     }
 }
