@@ -11,6 +11,7 @@ public interface IApplicationDbContext
     DbSet<PromptVariable> PromptVariables { get; }
     DbSet<PromptTemplate> PromptTemplates { get; }
     DbSet<PromptVersion> PromptVersions { get; }
+    DbSet<PromptExecution> PromptExecutions { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -17,6 +17,7 @@ public class SmartPromptDbContext : DbContext, IApplicationDbContext
     public DbSet<PromptVariable> PromptVariables => Set<PromptVariable>();
     public DbSet<PromptTemplate> PromptTemplates => Set<PromptTemplate>();
     public DbSet<PromptVersion> PromptVersions => Set<PromptVersion>();
+    public DbSet<PromptExecution> PromptExecutions => Set<PromptExecution>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
