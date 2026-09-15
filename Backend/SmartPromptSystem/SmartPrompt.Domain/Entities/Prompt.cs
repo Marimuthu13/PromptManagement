@@ -16,4 +16,5 @@ public class Prompt : AuditableEntity
     public User User { get; set; } = null!;
     public Category Category { get; set; } = null!;
     public ICollection<PromptVariable> Variables { get; private set; } = new List<PromptVariable>();
+    public ICollection<PromptVersion> Versions { get; private set; } = new List<PromptVersion>();
 }

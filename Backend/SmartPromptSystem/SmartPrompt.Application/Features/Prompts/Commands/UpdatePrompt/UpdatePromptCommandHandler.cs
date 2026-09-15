@@ -40,7 +40,22 @@ public class UpdatePromptCommandHandler(
 
         entity.Title = request.Title;
         entity.Description = request.Description;
-        entity.Content = request.Content;
+
+        if (entity.Content != request.Content)
+        {
+            var lastVersionNumber = await context.PromptVersions
+                .Where(v => v.PromptId == entity.Id)
+                .MaxAsync(v => (int?)v.VersionNumber, cancellationToken) ?? 0;
+
+            context.PromptVersions.Add(new PromptVersion
+            {
+                PromptId = entity.Id,
+                Content = entity.Content,
+                VersionNumber = lastVersionNumber + 1
+            });
+            
+            entity.Content = request.Content;
+        }
         entity.CategoryId = request.CategoryId;
 
         var variableNames = SmartPrompt.Application.Common.Utils.PromptVariableParser.ExtractVariables(request.Content).ToList();

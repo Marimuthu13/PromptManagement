@@ -10,6 +10,7 @@ public interface IApplicationDbContext
     DbSet<Prompt> Prompts { get; }
     DbSet<PromptVariable> PromptVariables { get; }
     DbSet<PromptTemplate> PromptTemplates { get; }
+    DbSet<PromptVersion> PromptVersions { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

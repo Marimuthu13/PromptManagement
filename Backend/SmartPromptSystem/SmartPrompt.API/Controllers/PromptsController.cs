@@ -83,4 +83,28 @@ public class PromptsController(ISender sender) : ControllerBase
         await sender.Send(new DeletePromptCommand(id), cancellationToken);
         return NoContent();
     }
+
+    [HttpGet("{id}/versions")]
+    [ProducesResponseType(typeof(List<SmartPrompt.Application.Features.Prompts.Queries.GetPromptVersions.PromptVersionDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetVersions(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new SmartPrompt.Application.Features.Prompts.Queries.GetPromptVersions.GetPromptVersionsQuery { PromptId = id }, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPost("{id}/versions/{versionId}/restore")]
+    [ProducesResponseType(typeof(PromptDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RestoreVersion(Guid id, Guid versionId, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new SmartPrompt.Application.Features.Prompts.Commands.RestorePromptVersion.RestorePromptVersionCommand 
+        { 
+            PromptId = id, 
+            VersionId = versionId 
+        }, cancellationToken);
+        return Ok(result);
+    }
 }
