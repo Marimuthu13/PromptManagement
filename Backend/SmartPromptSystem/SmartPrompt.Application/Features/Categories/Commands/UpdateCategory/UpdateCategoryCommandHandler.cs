@@ -7,19 +7,21 @@ using SmartPrompt.Domain.Entities;
 
 namespace SmartPrompt.Application.Features.Categories.Commands.UpdateCategory;
 
-public class UpdateCategoryCommandHandler(IApplicationDbContext context) : IRequestHandler<UpdateCategoryCommand, CategoryDto>
+public class UpdateCategoryCommandHandler(
+    IApplicationDbContext context,
+    ICacheService cacheService) : IRequestHandler<UpdateCategoryCommand, CategoryDto>
 {
     public async Task<CategoryDto> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var entity = await context.Categories
+        var category = await context.Categories
             .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
-        if (entity == null)
+        if (category == null)
         {
             throw new NotFoundException(nameof(Category), request.Id);
         }
 
-        if (entity.Name != request.Name)
+        if (category.Name != request.Name)
         {
             var exists = await context.Categories
                 .AnyAsync(c => c.Name == request.Name, cancellationToken);
@@ -30,18 +32,20 @@ public class UpdateCategoryCommandHandler(IApplicationDbContext context) : IRequ
             }
         }
 
-        entity.Name = request.Name;
-        entity.Description = request.Description;
+        category.Name = request.Name;
+        category.Description = request.Description;
 
         await context.SaveChangesAsync(cancellationToken);
 
+        await cacheService.RemoveAsync("Categories_All", cancellationToken);
+
         return new CategoryDto
         {
-            Id = entity.Id,
-            Name = entity.Name,
-            Description = entity.Description,
-            CreatedAtUtc = entity.CreatedAtUtc,
-            UpdatedAtUtc = entity.UpdatedAtUtc
+            Id = category.Id,
+            Name = category.Name,
+            Description = category.Description,
+            CreatedAtUtc = category.CreatedAtUtc,
+            UpdatedAtUtc = category.UpdatedAtUtc
         };
     }
 }

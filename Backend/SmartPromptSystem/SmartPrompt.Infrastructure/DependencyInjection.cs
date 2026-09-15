@@ -37,6 +37,10 @@ public static class DependencyInjection
         services.Configure<SmartPrompt.Infrastructure.AI.OpenAIConfiguration>(configuration.GetSection(SmartPrompt.Infrastructure.AI.OpenAIConfiguration.SectionName));
         services.AddHttpClient<IAIProvider, SmartPrompt.Infrastructure.AI.OpenAIProvider>();
 
+        // Caching
+        services.AddDistributedMemoryCache();
+        services.AddSingleton<ICacheService, SmartPrompt.Infrastructure.Caching.CacheService>();
+
         return services;
     }
 }

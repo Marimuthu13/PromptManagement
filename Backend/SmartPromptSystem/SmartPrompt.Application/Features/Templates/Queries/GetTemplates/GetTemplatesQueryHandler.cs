@@ -5,18 +5,21 @@ using SmartPrompt.Application.Common.Models;
 
 namespace SmartPrompt.Application.Features.Templates.Queries.GetTemplates;
 
-public class GetTemplatesQueryHandler : IRequestHandler<GetTemplatesQuery, PagedResult<TemplateDto>>
+public class GetTemplatesQueryHandler(
+    IApplicationDbContext context,
+    ICacheService cacheService) : IRequestHandler<GetTemplatesQuery, PagedResult<TemplateDto>>
 {
-    private readonly IApplicationDbContext _context;
-
-    public GetTemplatesQueryHandler(IApplicationDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<PagedResult<TemplateDto>> Handle(GetTemplatesQuery request, CancellationToken cancellationToken)
     {
-        var query = _context.PromptTemplates.Include(t => t.Category).AsNoTracking();
+        var cacheKey = $"Templates_{request.CategoryId}_{request.IsSystemCurated}_{request.SearchText}_{request.Page}_{request.PageSize}";
+
+        var cachedResult = await cacheService.GetAsync<PagedResult<TemplateDto>>(cacheKey, cancellationToken);
+        if (cachedResult != null)
+        {
+            return cachedResult;
+        }
+
+        var query = context.PromptTemplates.Include(t => t.Category).AsNoTracking();
 
         if (request.CategoryId.HasValue)
         {
@@ -52,12 +55,16 @@ public class GetTemplatesQueryHandler : IRequestHandler<GetTemplatesQuery, Paged
             })
             .ToListAsync(cancellationToken);
 
-        return new PagedResult<TemplateDto>
+        var result = new PagedResult<TemplateDto>
         {
             Items = templates,
             TotalCount = totalCount,
             Page = request.Page,
             PageSize = request.PageSize
         };
+
+        await cacheService.SetAsync(cacheKey, result, TimeSpan.FromMinutes(15), cancellationToken);
+
+        return result;
     }
 }

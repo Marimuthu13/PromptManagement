@@ -6,7 +6,9 @@ using SmartPrompt.Application.Common.Exceptions;
 
 namespace SmartPrompt.Application.Features.Categories.Commands.CreateCategory;
 
-public class CreateCategoryCommandHandler(IApplicationDbContext context) : IRequestHandler<CreateCategoryCommand, Guid>
+public class CreateCategoryCommandHandler(
+    IApplicationDbContext context,
+    ICacheService cacheService) : IRequestHandler<CreateCategoryCommand, Guid>
 {
     public async Task<Guid> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -27,6 +29,8 @@ public class CreateCategoryCommandHandler(IApplicationDbContext context) : IRequ
 
         context.Categories.Add(entity);
         await context.SaveChangesAsync(cancellationToken);
+
+        await cacheService.RemoveAsync("Categories_All", cancellationToken);
 
         return entity.Id;
     }

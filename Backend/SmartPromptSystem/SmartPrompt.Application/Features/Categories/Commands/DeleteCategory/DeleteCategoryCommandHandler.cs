@@ -6,25 +6,30 @@ using SmartPrompt.Domain.Entities;
 
 namespace SmartPrompt.Application.Features.Categories.Commands.DeleteCategory;
 
-public class DeleteCategoryCommandHandler(IApplicationDbContext context) : IRequestHandler<DeleteCategoryCommand>
+public class DeleteCategoryCommandHandler(
+    IApplicationDbContext context,
+    ICacheService cacheService) : IRequestHandler<DeleteCategoryCommand>
 {
     public async Task Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        var entity = await context.Categories
+        var category = await context.Categories
             .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
-        if (entity == null)
+        if (category == null)
         {
             throw new NotFoundException(nameof(Category), request.Id);
         }
 
+        // Optional: Check if category is being used by Prompts
         var hasPrompts = await context.Prompts.AnyAsync(p => p.CategoryId == request.Id, cancellationToken);
         if (hasPrompts)
         {
             throw new ConflictException("Category cannot be deleted because it is referenced by one or more prompts.");
         }
 
-        context.Categories.Remove(entity);
+        context.Categories.Remove(category);
         await context.SaveChangesAsync(cancellationToken);
+
+        await cacheService.RemoveAsync("Categories_All", cancellationToken);
     }
 }
