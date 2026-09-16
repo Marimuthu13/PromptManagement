@@ -20,12 +20,12 @@ public class DuplicateTemplateCommandHandler : IRequestHandler<DuplicateTemplate
 
     public async Task<Guid> Handle(DuplicateTemplateCommand request, CancellationToken cancellationToken)
     {
-        var template = await _context.PromptTemplates
-            .FirstOrDefaultAsync(t => t.Id == request.TemplateId, cancellationToken);
+        var template = await _context.Prompts
+            .FirstOrDefaultAsync(t => t.Id == request.TemplateId && t.IsTemplate, cancellationToken);
 
         if (template == null)
         {
-            throw new NotFoundException(nameof(PromptTemplate), request.TemplateId);
+            throw new NotFoundException("Template", request.TemplateId);
         }
 
         var currentUserId = _currentUser.UserId 

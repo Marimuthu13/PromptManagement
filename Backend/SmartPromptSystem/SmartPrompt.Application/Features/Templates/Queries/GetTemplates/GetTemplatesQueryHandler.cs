@@ -19,39 +19,34 @@ public class GetTemplatesQueryHandler(
             return cachedResult;
         }
 
-        var query = context.PromptTemplates.Include(t => t.Category).AsNoTracking();
+        var query = context.Prompts.Include(p => p.Category).AsNoTracking().Where(p => p.IsTemplate);
 
         if (request.CategoryId.HasValue)
         {
-            query = query.Where(t => t.CategoryId == request.CategoryId.Value);
-        }
-
-        if (request.IsSystemCurated.HasValue)
-        {
-            query = query.Where(t => t.IsSystemCurated == request.IsSystemCurated.Value);
+            query = query.Where(p => p.CategoryId == request.CategoryId.Value);
         }
 
         if (!string.IsNullOrWhiteSpace(request.SearchText))
         {
-            query = query.Where(t => t.Title.Contains(request.SearchText) || 
-                                     t.Description.Contains(request.SearchText));
+            query = query.Where(p => p.Title.Contains(request.SearchText) || 
+                                     p.Description.Contains(request.SearchText));
         }
 
         var totalCount = await query.CountAsync(cancellationToken);
 
         var templates = await query
-            .OrderBy(t => t.Title)
+            .OrderBy(p => p.Title)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
-            .Select(t => new TemplateDto
+            .Select(p => new TemplateDto
             {
-                Id = t.Id,
-                Title = t.Title,
-                Description = t.Description,
-                Content = t.Content,
-                CategoryId = t.CategoryId,
-                CategoryName = t.Category.Name,
-                IsSystemCurated = t.IsSystemCurated
+                Id = p.Id,
+                Title = p.Title,
+                Description = p.Description,
+                Content = p.Content,
+                CategoryId = p.CategoryId,
+                CategoryName = p.Category.Name,
+                IsSystemCurated = true
             })
             .ToListAsync(cancellationToken);
 

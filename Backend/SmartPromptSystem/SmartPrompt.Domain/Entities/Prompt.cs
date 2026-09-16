@@ -7,6 +7,7 @@ public class Prompt : AuditableEntity
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
+    public bool IsTemplate { get; set; } = false;
 
     // Foreign Keys
     public Guid UserId { get; set; }
@@ -18,4 +19,5 @@ public class Prompt : AuditableEntity
     public ICollection<PromptVariable> Variables { get; private set; } = new List<PromptVariable>();
     public ICollection<PromptVersion> Versions { get; private set; } = new List<PromptVersion>();
     public ICollection<PromptExecution> Executions { get; private set; } = new List<PromptExecution>();
+    public ICollection<PromptExecutionLog> ExecutionLogs { get; private set; } = new List<PromptExecutionLog>();
 }

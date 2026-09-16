@@ -85,6 +85,10 @@ namespace SmartPrompt.Infrastructure.Migrations
                         .HasColumnType("character varying(1000)")
                         .HasColumnName("description");
 
+                    b.Property<bool>("IsTemplate")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_template");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -175,55 +179,48 @@ namespace SmartPrompt.Infrastructure.Migrations
                     b.ToTable("prompt_executions", (string)null);
                 });
 
-            modelBuilder.Entity("SmartPrompt.Domain.Entities.PromptTemplate", b =>
+            modelBuilder.Entity("SmartPrompt.Domain.Entities.PromptExecutionLog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("category_id");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("content");
+                    b.Property<int>("CompletionTokens")
+                        .HasColumnType("integer")
+                        .HasColumnName("completion_tokens");
 
                     b.Property<DateTimeOffset>("CreatedAtUtc")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at_utc");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)")
-                        .HasColumnName("description");
+                    b.Property<DateTime>("ExecutedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("executed_at");
 
-                    b.Property<bool>("IsSystemCurated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(true)
-                        .HasColumnName("is_system_curated");
+                    b.Property<Guid>("PromptId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("prompt_id");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("title");
+                    b.Property<int>("PromptTokens")
+                        .HasColumnType("integer")
+                        .HasColumnName("prompt_tokens");
+
+                    b.Property<int>("TotalTokens")
+                        .HasColumnType("integer")
+                        .HasColumnName("total_tokens");
 
                     b.Property<DateTimeOffset?>("UpdatedAtUtc")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at_utc");
 
                     b.HasKey("Id")
-                        .HasName("pk_prompt_templates");
+                        .HasName("pk_prompt_execution_logs");
 
-                    b.HasIndex("CategoryId")
-                        .HasDatabaseName("ix_prompt_templates_category_id");
+                    b.HasIndex("PromptId")
+                        .HasDatabaseName("ix_prompt_execution_logs_prompt_id");
 
-                    b.ToTable("prompt_templates", (string)null);
+                    b.ToTable("PromptExecutionLogs", (string)null);
                 });
 
             modelBuilder.Entity("SmartPrompt.Domain.Entities.PromptVariable", b =>
@@ -378,16 +375,16 @@ namespace SmartPrompt.Infrastructure.Migrations
                     b.Navigation("Prompt");
                 });
 
-            modelBuilder.Entity("SmartPrompt.Domain.Entities.PromptTemplate", b =>
+            modelBuilder.Entity("SmartPrompt.Domain.Entities.PromptExecutionLog", b =>
                 {
-                    b.HasOne("SmartPrompt.Domain.Entities.Category", "Category")
-                        .WithMany("PromptTemplates")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("SmartPrompt.Domain.Entities.Prompt", "Prompt")
+                        .WithMany("ExecutionLogs")
+                        .HasForeignKey("PromptId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_prompt_templates_categories_category_id");
+                        .HasConstraintName("fk_prompt_execution_logs_prompts_prompt_id");
 
-                    b.Navigation("Category");
+                    b.Navigation("Prompt");
                 });
 
             modelBuilder.Entity("SmartPrompt.Domain.Entities.PromptVariable", b =>
@@ -416,13 +413,13 @@ namespace SmartPrompt.Infrastructure.Migrations
 
             modelBuilder.Entity("SmartPrompt.Domain.Entities.Category", b =>
                 {
-                    b.Navigation("PromptTemplates");
-
                     b.Navigation("Prompts");
                 });
 
             modelBuilder.Entity("SmartPrompt.Domain.Entities.Prompt", b =>
                 {
+                    b.Navigation("ExecutionLogs");
+
                     b.Navigation("Executions");
 
                     b.Navigation("Variables");

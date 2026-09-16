@@ -18,14 +18,14 @@ public class GetTemplateByIdQueryHandler : IRequestHandler<GetTemplateByIdQuery,
 
     public async Task<TemplateDto> Handle(GetTemplateByIdQuery request, CancellationToken cancellationToken)
     {
-        var template = await _context.PromptTemplates
+        var template = await _context.Prompts
             .Include(t => t.Category)
             .AsNoTracking()
-            .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+            .FirstOrDefaultAsync(t => t.Id == request.Id && t.IsTemplate, cancellationToken);
 
         if (template == null)
         {
-            throw new NotFoundException(nameof(PromptTemplate), request.Id);
+            throw new NotFoundException("Template", request.Id);
         }
 
         return new TemplateDto
@@ -36,7 +36,7 @@ public class GetTemplateByIdQueryHandler : IRequestHandler<GetTemplateByIdQuery,
             Content = template.Content,
             CategoryId = template.CategoryId,
             CategoryName = template.Category.Name,
-            IsSystemCurated = template.IsSystemCurated
+            IsSystemCurated = true
         };
     }
 }

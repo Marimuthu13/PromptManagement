@@ -45,17 +45,17 @@ public class DuplicateTemplateCommandHandlerTests
     {
         // Arrange
         var categoryId = Guid.NewGuid();
-        var template = new PromptTemplate
+        var template = new Prompt
         {
             Id = Guid.NewGuid(),
             Title = "Base Template",
             Description = "A cool template",
             Content = "Hello {name}, your {item} is ready.",
             CategoryId = categoryId,
-            IsSystemCurated = true
+            IsTemplate = true
         };
 
-        _context.PromptTemplates.Add(template);
+        _context.Prompts.Add(template);
         await _context.SaveChangesAsync();
 
         var handler = new DuplicateTemplateCommandHandler(_context, _currentUserMock.Object);

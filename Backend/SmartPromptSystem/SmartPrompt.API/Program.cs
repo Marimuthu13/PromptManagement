@@ -63,6 +63,18 @@ builder.Services.AddProblemDetails();
 // Register Application layer dependencies
 builder.Services.AddApplication();
 
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
+
 // Register Infrastructure layer dependencies
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -81,6 +93,8 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler(); // Adds the exception handling middleware
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();

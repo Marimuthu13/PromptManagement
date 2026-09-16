@@ -9,4 +9,5 @@ public record GetPromptsQuery : PagedRequest, IRequest<PagedResult<PromptDto>>
     public string? Search { get; init; }
     public string? SortBy { get; init; }
     public bool SortDescending { get; init; }
+    public bool? IsTemplate { get; init; }
 }

@@ -20,7 +20,7 @@ public class GetPromptsQueryHandler(
 
         var query = context.Prompts
             .AsNoTracking()
-            .Where(p => p.UserId == userId);
+            .Where(p => p.UserId == userId && p.IsTemplate == (request.IsTemplate ?? false));
 
         if (request.CategoryId.HasValue)
         {
@@ -29,7 +29,7 @@ public class GetPromptsQueryHandler(
 
         if (!string.IsNullOrWhiteSpace(request.Search))
         {
-            query = query.Where(p => p.Title.Contains(request.Search) || p.Content.Contains(request.Search));
+            query = query.Where(p => p.Title.Contains(request.Search) || p.Description.Contains(request.Search));
         }
 
         var totalCount = await query.CountAsync(cancellationToken);
@@ -52,6 +52,7 @@ public class GetPromptsQueryHandler(
                 Content = p.Content,
                 CategoryId = p.CategoryId,
                 UserId = p.UserId,
+                ExecutionCount = p.Executions.Count,
                 Variables = p.Variables.Select(v => new PromptVariableDto
                 {
                     Id = v.Id,

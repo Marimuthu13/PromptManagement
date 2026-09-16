@@ -8,4 +8,5 @@ public record CreatePromptCommand : IRequest<Guid>
     public string Description { get; init; } = string.Empty;
     public string Content { get; init; } = string.Empty;
     public Guid CategoryId { get; init; }
+    public bool IsTemplate { get; init; } = false;
 }

@@ -9,5 +9,4 @@ public class Category : AuditableEntity
 
     // Navigation properties
     public ICollection<Prompt> Prompts { get; set; } = new List<Prompt>();
-    public ICollection<PromptTemplate> PromptTemplates { get; set; } = new List<PromptTemplate>();
 }

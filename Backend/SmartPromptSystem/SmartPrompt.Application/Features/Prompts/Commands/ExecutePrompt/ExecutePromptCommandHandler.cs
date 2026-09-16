@@ -69,9 +69,10 @@ public class ExecutePromptCommandHandler(
             Model = request.ModelName
         };
 
+        AIResponse? response = null;
         try
         {
-            var response = await provider.ExecutePromptAsync(aiRequest, cancellationToken);
+            response = await provider.ExecutePromptAsync(aiRequest, cancellationToken);
             
             execution.IsSuccessful = true;
             execution.ResultContent = response.Content;
@@ -86,6 +87,19 @@ public class ExecutePromptCommandHandler(
         }
 
         context.PromptExecutions.Add(execution);
+
+        if (execution.IsSuccessful && response != null)
+        {
+            var log = new PromptExecutionLog
+            {
+                PromptId = prompt.Id,
+                ExecutedAt = DateTime.UtcNow,
+                PromptTokens = response.PromptTokens,
+                CompletionTokens = response.CompletionTokens,
+                TotalTokens = response.TotalTokens
+            };
+            context.PromptExecutionLogs.Add(log);
+        }
         await context.SaveChangesAsync(cancellationToken);
 
         return new PromptExecutionDto

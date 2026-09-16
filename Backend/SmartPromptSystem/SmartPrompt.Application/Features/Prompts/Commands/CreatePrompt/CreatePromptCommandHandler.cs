@@ -39,7 +39,8 @@ public class CreatePromptCommandHandler(
             Description = request.Description,
             Content = request.Content,
             CategoryId = request.CategoryId,
-            UserId = userId
+            UserId = userId,
+            IsTemplate = request.IsTemplate
         };
 
         var variableNames = SmartPrompt.Application.Common.Utils.PromptVariableParser.ExtractVariables(request.Content);

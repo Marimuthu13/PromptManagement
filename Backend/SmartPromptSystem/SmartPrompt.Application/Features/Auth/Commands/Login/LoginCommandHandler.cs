@@ -24,8 +24,13 @@ public class LoginCommandHandler(
 
         return new LoginResponseDto
         {
-            AccessToken = token,
-            ExpiresInMinutes = 60 // Default matching the configuration
+            Token = token,
+            User = new UserDto
+            {
+                Id = user.Id.ToString(),
+                Name = user.Username,
+                Email = user.Email
+            }
         };
     }
 }
