@@ -27,19 +27,23 @@ public class AnalyticsController : ControllerBase
             .Take(10)
             .Select(x => new
             {
-                Title = x.Prompt.Title,
+                FeatureType = x.FeatureType,
+                DisplayTitle = x.Prompt != null ? x.Prompt.Title : (x.DisplayTitle ?? x.FeatureType ?? "AI Operation"),
+                ModelUsed = x.ModelUsed ?? "Unknown",
+                TotalTokens = x.TotalTokens,
+                LatencyMs = x.LatencyMs,
                 Timestamp = x.ExecutedAt,
-                TotalTokens = x.TotalTokens
+                Status = x.Status
             })
             .ToListAsync(cancellationToken);
 
         var topPrompts = await _context.PromptExecutionLogs
             .Include(x => x.Prompt)
-            .GroupBy(x => new { x.PromptId, x.Prompt.Title })
+            .GroupBy(x => new { x.PromptId, Title = x.Prompt != null ? x.Prompt.Title : (x.DisplayTitle ?? "Utility AI Call") })
             .Select(g => new
             {
                 PromptId = g.Key.PromptId,
-                Title = g.Key.Title,
+                Title = g.Key.Title ?? "Unknown",
                 TotalTokens = g.Sum(x => x.TotalTokens)
             })
             .OrderByDescending(x => x.TotalTokens)

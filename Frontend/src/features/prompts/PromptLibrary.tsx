@@ -79,7 +79,7 @@ const PromptLibrary: React.FC = () => {
                   }
                 }}
               />
-              <button type="submit" className="view-btn" style={{ margin: 0, height: '40px', padding: '0 1.25rem' }}>Search</button>
+              <button type="submit">Search</button>
             </form>
             <button className="execute-btn" onClick={() => navigate('/prompts/new')} style={{ margin: 0, height: '40px', padding: '0 1.25rem' }}>New Prompt</button>
           </div>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SmartPrompt.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using SmartPrompt.Infrastructure.Persistence;
 namespace SmartPrompt.Infrastructure.Migrations
 {
     [DbContext(typeof(SmartPromptDbContext))]
-    partial class SmartPromptDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260916095213_MakePromptIdNullable")]
+    partial class MakePromptIdNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,30 +197,9 @@ namespace SmartPrompt.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at_utc");
 
-                    b.Property<string>("DisplayTitle")
-                        .HasColumnType("text")
-                        .HasColumnName("display_title");
-
                     b.Property<DateTime>("ExecutedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("executed_at");
-
-                    b.Property<string>("FeatureType")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("feature_type");
-
-                    b.Property<bool>("IsFallback")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_fallback");
-
-                    b.Property<long>("LatencyMs")
-                        .HasColumnType("bigint")
-                        .HasColumnName("latency_ms");
-
-                    b.Property<string>("ModelUsed")
-                        .HasColumnType("text")
-                        .HasColumnName("model_used");
 
                     b.Property<Guid?>("PromptId")
                         .HasColumnType("uuid")
@@ -226,11 +208,6 @@ namespace SmartPrompt.Infrastructure.Migrations
                     b.Property<int>("PromptTokens")
                         .HasColumnType("integer")
                         .HasColumnName("prompt_tokens");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("status");
 
                     b.Property<int>("TotalTokens")
                         .HasColumnType("integer")

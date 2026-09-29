@@ -132,4 +132,22 @@ public class PromptsController(ISender sender) : ControllerBase
         var result = await sender.Send(new SmartPrompt.Application.Features.Prompts.Queries.GetPromptExecutions.GetPromptExecutionsQuery { PromptId = id }, cancellationToken);
         return Ok(result);
     }
+
+    [HttpPost("optimize")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> OptimizePrompt([FromBody] SmartPrompt.Application.Features.Prompts.Commands.OptimizePrompt.OptimizePromptCommand command, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(command, cancellationToken);
+        return Content(result, "application/json");
+    }
+
+    [HttpPost("generate-variables")]
+    [ProducesResponseType(typeof(Dictionary<string, string>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GenerateVariables([FromBody] SmartPrompt.Application.Features.Prompts.Commands.GenerateVariables.GenerateVariablesCommand command, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(command, cancellationToken);
+        return Ok(result);
+    }
 }

@@ -22,6 +22,7 @@ const MainLayout: React.FC = () => {
           <Link to="/" style={{ textDecoration: 'none', color: '#4f46e5', fontWeight: 500 }}>Library</Link>
           <Link to="/templates" style={{ textDecoration: 'none', color: '#4f46e5', fontWeight: 500 }}>Templates</Link>
           <Link to="/dashboard" style={{ textDecoration: 'none', color: '#4f46e5', fontWeight: 500 }}>Dashboard</Link>
+          <Link to="/vision" style={{ textDecoration: 'none', color: '#4f46e5', fontWeight: 500 }}>Vision</Link>
         </nav>
         <div className="header-actions">
           <span className="user-name">Welcome, {user?.name}</span>

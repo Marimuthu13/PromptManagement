@@ -10,6 +10,7 @@ import PromptEditor from './features/prompts/PromptEditor';
 import PromptExecution from './features/prompts/PromptExecution';
 import Templates from './features/templates/Templates';
 import Dashboard from './features/analytics/Dashboard';
+import VisionPrompt from './features/vision/VisionPrompt';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<PromptLibrary />} />
             <Route path="/templates" element={<Templates />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/vision" element={<VisionPrompt />} />
             <Route path="/prompts/new" element={<PromptEditor />} />
             <Route path="/prompts/:id/edit" element={<PromptEditor />} />
             <Route path="/prompts/:id/execute" element={<PromptExecution />} />

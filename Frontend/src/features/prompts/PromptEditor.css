@@ -227,3 +227,130 @@
 .delete-btn:hover:not(:disabled) {
   background-color: #fef2f2;
 }
+
+/* Prompt Doctor Styles */
+.content-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.content-header-row label {
+  margin-bottom: 0;
+}
+
+.analyze-trigger-btn {
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #4f46e5;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.analyze-trigger-btn:hover:not(:disabled) {
+  background-color: #e0e7ff;
+  border-color: #c7d2fe;
+}
+
+.analyze-trigger-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  color: #6b7280;
+}
+
+.doctor-report-panel {
+  margin-top: 1rem;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+}
+
+.doctor-report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.75rem;
+}
+
+.doctor-report-header h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.125rem;
+}
+
+.grade-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.grade-a { background-color: #dcfce7; color: #166534; }
+.grade-b { background-color: #dbeafe; color: #1e40af; }
+.grade-c { background-color: #fef9c3; color: #854d0e; }
+.grade-d { background-color: #ffedd5; color: #9a3412; }
+.grade-f { background-color: #fee2e2; color: #991b1b; }
+
+.doctor-report-section {
+  margin-bottom: 1.5rem;
+}
+
+.doctor-report-section h4 {
+  margin: 0 0 0.5rem 0;
+  color: #475569;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.doctor-report-section ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+.doctor-report-section li {
+  margin-bottom: 0.25rem;
+}
+
+.optimized-prompt-text {
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #1e293b;
+  white-space: pre-wrap;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.apply-optimized-btn {
+  width: 100%;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.apply-optimized-btn:hover {
+  background-color: #059669;
+}

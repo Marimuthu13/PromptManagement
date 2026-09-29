@@ -1,5 +1,5 @@
 import { apiClient } from './apiClient';
-import type { PromptDto, GetPromptsRequest, CreatePromptRequest, UpdatePromptRequest, ExecutePromptRequest, PromptExecutionDto, PromptVersionDto, TokenAnalyticsDto } from '../types/prompt';
+import type { PromptDto, CreatePromptRequest, UpdatePromptRequest, ExecutePromptRequest, PromptExecutionDto, PromptVersionDto, GetPromptsRequest, TokenAnalyticsDto, PromptAnalysisDto } from '../types/prompt';
 import type { PagedResult } from '../types/common';
 
 export const promptApi = {
@@ -56,6 +56,21 @@ export const promptApi = {
 
   getAnalytics: async (): Promise<TokenAnalyticsDto> => {
     const response = await apiClient.get<TokenAnalyticsDto>('/api/analytics/tokens');
+    return response.data;
+  },
+
+  analyzeImage: async (imageData: string): Promise<{ result: string }> => {
+    const response = await apiClient.post<{ result: string }>('/api/vision/analyze', { imageData });
+    return response.data;
+  },
+
+  optimizePrompt: async (draftContent: string): Promise<PromptAnalysisDto> => {
+    const response = await apiClient.post<PromptAnalysisDto>('/api/prompts/optimize', { draftContent });
+    return response.data;
+  },
+
+  generateVariables: async (promptContent: string, variableNames: string[]): Promise<Record<string, string>> => {
+    const response = await apiClient.post<Record<string, string>>('/api/prompts/generate-variables', { promptContent, variableNames });
     return response.data;
   }
 };

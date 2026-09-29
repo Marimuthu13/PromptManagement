@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { promptApi } from '../../services/api/promptApi';
 import { categoryApi } from '../../services/api/categoryApi';
 import type { CategoryDto } from '../../services/types/category';
-import type { PromptVersionDto } from '../../services/types/prompt';
+import type { PromptVersionDto, PromptAnalysisDto } from '../../services/types/prompt';
 import './PromptEditor.css';
 
 const PromptEditor: React.FC = () => {
@@ -23,6 +23,10 @@ const PromptEditor: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  
+  // Prompt Doctor State
+  const [analysis, setAnalysis] = useState<PromptAnalysisDto | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => {
     const initForm = async () => {
@@ -106,6 +110,31 @@ const PromptEditor: React.FC = () => {
     }
   };
 
+  const handleAnalyze = async () => {
+    if (!content.trim()) {
+      setError('Please enter some prompt content to analyze.');
+      return;
+    }
+
+    setIsAnalyzing(true);
+    setError('');
+    try {
+      const result = await promptApi.optimizePrompt(content);
+      setAnalysis(result);
+    } catch (err: any) {
+      setError(err.response?.data?.title || 'Failed to analyze prompt');
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const handleApplyAnalysis = () => {
+    if (analysis) {
+      setContent(analysis.optimizedPrompt);
+      setAnalysis(null);
+    }
+  };
+
   if (isLoading) {
     return <div className="editor-loading">Loading editor...</div>;
   }
@@ -169,7 +198,17 @@ const PromptEditor: React.FC = () => {
           </div>
 
           <div className="form-group flex-grow">
-            <label htmlFor="content">Prompt Content</label>
+            <div className="content-header-row">
+              <label htmlFor="content">Prompt Content</label>
+              <button 
+                type="button" 
+                className="analyze-trigger-btn"
+                onClick={handleAnalyze}
+                disabled={isAnalyzing || !content.trim()}
+              >
+                {isAnalyzing ? 'Analyzing...' : '🩺 Analyze & Optimize (Prompt Doctor)'}
+              </button>
+            </div>
             <textarea
               id="content"
               value={content}
@@ -178,6 +217,43 @@ const PromptEditor: React.FC = () => {
               placeholder="Enter your prompt text here... use {{Variable}} for placeholders."
               rows={15}
             />
+            {analysis && (
+              <div className="doctor-report-panel">
+                <div className="doctor-report-header">
+                  <h3>Doctor's Report</h3>
+                  <span className={`grade-badge grade-${analysis.grade.toLowerCase()}`}>
+                    Grade: {analysis.grade} ({analysis.score}/100)
+                  </span>
+                </div>
+                
+                <div className="doctor-report-section">
+                  {analysis.isFallback && (
+                    <div className="fallback-banner">
+                      ⚠️ AI provider unreachable. Result generated using local fallback mode.
+                    </div>
+                  )}
+                  <h4>Suggestions</h4>
+                  <ul>
+                    {analysis.suggestions.map((sug, i) => (
+                      <li key={i}>{sug}</li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div className="doctor-report-section">
+                  <h4>Optimized Prompt</h4>
+                  <div className="optimized-prompt-text">{analysis.optimizedPrompt}</div>
+                </div>
+                
+                <button 
+                  type="button" 
+                  className="apply-optimized-btn"
+                  onClick={handleApplyAnalysis}
+                >
+                  Apply Optimized Version
+                </button>
+              </div>
+            )}
           </div>
 
           <button type="submit" className="save-btn" disabled={isSubmitting}>

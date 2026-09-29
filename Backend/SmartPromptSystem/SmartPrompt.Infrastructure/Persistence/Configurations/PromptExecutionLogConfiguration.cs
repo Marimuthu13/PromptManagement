@@ -18,6 +18,7 @@ public class PromptExecutionLogConfiguration : IEntityTypeConfiguration<PromptEx
         builder.HasOne(e => e.Prompt)
             .WithMany(p => p.ExecutionLogs)
             .HasForeignKey(e => e.PromptId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

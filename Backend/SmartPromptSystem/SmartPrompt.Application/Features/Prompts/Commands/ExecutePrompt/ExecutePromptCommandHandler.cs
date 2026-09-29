@@ -88,18 +88,21 @@ public class ExecutePromptCommandHandler(
 
         context.PromptExecutions.Add(execution);
 
-        if (execution.IsSuccessful && response != null)
+        var log = new PromptExecutionLog
         {
-            var log = new PromptExecutionLog
-            {
-                PromptId = prompt.Id,
-                ExecutedAt = DateTime.UtcNow,
-                PromptTokens = response.PromptTokens,
-                CompletionTokens = response.CompletionTokens,
-                TotalTokens = response.TotalTokens
-            };
-            context.PromptExecutionLogs.Add(log);
-        }
+            PromptId = prompt.Id,
+            ExecutedAt = DateTime.UtcNow,
+            PromptTokens = response?.PromptTokens ?? 0,
+            CompletionTokens = response?.CompletionTokens ?? 0,
+            TotalTokens = response?.TotalTokens ?? 0,
+            FeatureType = "Prompt Execution",
+            DisplayTitle = prompt.Title,
+            Status = execution.IsSuccessful ? "Success" : "Failed",
+            IsFallback = false,
+            ModelUsed = request.ModelName,
+            LatencyMs = response != null ? (long)response.Duration.TotalMilliseconds : 0
+        };
+        context.PromptExecutionLogs.Add(log);
         await context.SaveChangesAsync(cancellationToken);
 
         return new PromptExecutionDto

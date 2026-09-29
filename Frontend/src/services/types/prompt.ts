@@ -56,6 +56,7 @@ export interface PromptExecutionDto {
   isSuccessful: boolean;
   errorMessage?: string;
   createdAtUtc: string;
+  isFallback?: boolean;
 }
 
 export interface PromptVersionDto {
@@ -67,9 +68,13 @@ export interface PromptVersionDto {
 }
 
 export interface RecentExecutionDto {
-  title: string;
-  timestamp: string;
+  featureType: string;
+  displayTitle: string;
+  modelUsed: string;
   totalTokens: number;
+  latencyMs: number;
+  timestamp: string;
+  status: string;
 }
 
 export interface TopPromptDto {
@@ -82,4 +87,12 @@ export interface TokenAnalyticsDto {
   totalSystemTokens: number;
   recentExecutions: RecentExecutionDto[];
   topPromptsByUsage: TopPromptDto[];
+}
+
+export interface PromptAnalysisDto {
+  score: number;
+  grade: string;
+  suggestions: string[];
+  optimizedPrompt: string;
+  isFallback?: boolean;
 }

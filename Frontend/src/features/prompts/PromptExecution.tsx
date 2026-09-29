@@ -16,10 +16,16 @@ const PromptExecution: React.FC = () => {
   const [providerName, setProviderName] = useState('Gemini');
   const [modelName, setModelName] = useState('gemini-3.6-flash');
   const [variables, setVariables] = useState<Record<string, string>>({});
-  
+
   // Execution states
   const [isExecuting, setIsExecuting] = useState(false);
   const [executionResult, setExecutionResult] = useState<PromptExecutionDto | null>(null);
+
+  // Autofill states
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  // Copy states
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const fetchPrompt = async () => {
@@ -29,7 +35,7 @@ const PromptExecution: React.FC = () => {
       try {
         const data = await promptApi.getPromptById(id);
         setPrompt(data);
-        
+
         // Initialize variables
         const initialVars: Record<string, string> = {};
         data.variables.forEach(v => {
@@ -72,6 +78,38 @@ const PromptExecution: React.FC = () => {
     }
   };
 
+  const handleAutofill = async () => {
+    if (!prompt || prompt.variables.length === 0) return;
+
+    setIsGenerating(true);
+    setError('');
+
+    try {
+      const variableNames = prompt.variables.map(v => v.name);
+      const generatedValues = await promptApi.generateVariables(prompt.content, variableNames);
+
+      setVariables(prev => ({
+        ...prev,
+        ...generatedValues
+      }));
+    } catch (err: any) {
+      setError(err.response?.data?.title || 'Failed to generate variable values.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleCopyResult = async () => {
+    if (!executionResult?.resultContent) return;
+    try {
+      await navigator.clipboard.writeText(executionResult.resultContent);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
+
   if (isLoading) return <div className="execution-loading">Loading prompt...</div>;
   if (!prompt) return <div className="execution-error">{error || 'Prompt not found.'}</div>;
 
@@ -91,9 +129,9 @@ const PromptExecution: React.FC = () => {
           <form onSubmit={handleExecute} className="execution-form">
             <div className="form-group">
               <label htmlFor="provider">AI Provider</label>
-              <select 
-                id="provider" 
-                value={providerName} 
+              <select
+                id="provider"
+                value={providerName}
                 onChange={e => setProviderName(e.target.value)}
               >
                 <option value="Gemini">Gemini</option>
@@ -104,28 +142,40 @@ const PromptExecution: React.FC = () => {
 
             <div className="form-group">
               <label htmlFor="model">Model Name</label>
-              <input 
-                type="text" 
-                id="model" 
-                value={modelName} 
+              <input
+                type="text"
+                id="model"
+                value={modelName}
                 onChange={e => setModelName(e.target.value)}
               />
             </div>
 
             {prompt.variables.length > 0 && (
               <div className="variables-section">
-                <h3>Prompt Variables</h3>
+                <div className="variables-header-row">
+                  <h3>Prompt Variables</h3>
+                  <button
+                    type="button"
+                    className="autofill-btn"
+                    onClick={handleAutofill}
+                    disabled={isGenerating}
+                  >
+                    {isGenerating ? 'Generating...' : '✨ Autofill Sample Values'}
+                  </button>
+                </div>
                 {prompt.variables.map(v => (
                   <div className="form-group" key={v.id}>
                     <label htmlFor={`var-${v.name}`}>
                       {v.name} {v.isRequired && <span className="required">*</span>}
                     </label>
-                    <textarea 
+                    <textarea
                       id={`var-${v.name}`}
+                      className={isGenerating ? 'skeleton-pulse' : ''}
                       value={variables[v.name] || ''}
                       onChange={e => handleVariableChange(v.name, e.target.value)}
                       required={v.isRequired}
                       rows={3}
+                      disabled={isGenerating}
                     />
                   </div>
                 ))}
@@ -144,10 +194,26 @@ const PromptExecution: React.FC = () => {
             <div className="result-loading">Waiting for AI response...</div>
           ) : executionResult ? (
             <div className={`result-card ${executionResult.isSuccessful ? 'success' : 'error'}`}>
-              <div className="result-metadata">
-                <span className="metadata-badge">{executionResult.model}</span>
-                <span className="metadata-badge">{executionResult.tokensUsed} tokens</span>
-                <span className="metadata-badge">{executionResult.durationMs} ms</span>
+              {executionResult.isFallback && (
+                <div className="fallback-banner">
+                  ⚠️ AI provider unreachable. Result generated using local fallback mode.
+                </div>
+              )}
+              <div className="result-header-row">
+                <div className="result-metadata">
+                  <span className="metadata-badge">{executionResult.model}</span>
+                  <span className="metadata-badge">{executionResult.tokensUsed} tokens</span>
+                  <span className="metadata-badge">{executionResult.durationMs} ms</span>
+                </div>
+                {executionResult.isSuccessful && (
+                  <button
+                    type="button"
+                    className={`copy-result-btn ${copied ? 'copied' : ''}`}
+                    onClick={handleCopyResult}
+                  >
+                    {copied ? '✓ Copied!' : '📋 Copy'}
+                  </button>
+                )}
               </div>
               <div className="result-content">
                 {executionResult.isSuccessful ? (
